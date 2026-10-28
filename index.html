@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="description" content="Sistema de Control de Asistencia y Gestión de Personal por Rol">
+  <title>Asistencias Pro | Control de Personal</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="assets/images/icon-192.png">
+</head>
+
+<body>
+
+  <input type="radio" name="main-nav" id="nav-login" checked class="hidden-radio">
+  <input type="radio" name="main-nav" id="nav-dashboard" class="hidden-radio">
+  <input type="radio" name="main-nav" id="nav-reports" class="hidden-radio">
+
+  <input type="radio" name="user-role" id="role-gerente" checked class="hidden-radio">
+  <input type="radio" name="user-role" id="role-cajero" class="hidden-radio">
+  <input type="radio" name="user-role" id="role-asistente" class="hidden-radio">
+
+  <input type="radio" name="date-filter" id="filter-all" checked class="hidden-radio">
+  <input type="radio" name="date-filter" id="filter-today" class="hidden-radio">
+  <input type="radio" name="date-filter" id="filter-yesterday" class="hidden-radio">
+  <input type="radio" name="date-filter" id="filter-prev" class="hidden-radio">
+
+  <input type="checkbox" id="modal-marcar" class="hidden-radio">
+
+  <div class="bg-layer">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+  </div>
+
+  <div class="app-layout">
+
+    <section class="page-view" id="view-login">
+      <div class="login-card glass-panel">
+
+        <div class="brand-header">
+          <div class="logo-box">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              <circle cx="12" cy="12" r="10" stroke-width="1.5" />
+            </svg>
+          </div>
+          <h1>Asistencias Pro</h1>
+          <p class="subtitle">Control de Acceso, Turnos y Puntualidad</p>
+        </div>
+
+        <form class="login-form" onsubmit="return false;">
+
+          <div class="form-group">
+            <label class="form-label" for="login-user">Identificación / Cédula</label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input type="text" id="login-user" class="form-control" placeholder="Ej. 4.892.110" value="4.892.110"
+                required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="login-pass">Contraseña</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="login-pass" class="form-control" value="••••••••" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Seleccionar Rol de Ingreso</label>
+            <div class="role-selector-pills">
+              <label for="role-gerente" class="role-pill pill-gerente">
+                <span class="pill-icon">👑</span>
+                <span class="pill-name">Gerente</span>
+              </label>
+              <label for="role-cajero" class="role-pill pill-cajero">
+                <span class="pill-icon">💳</span>
+                <span class="pill-name">Cajero</span>
+              </label>
+              <label for="role-asistente" class="role-pill pill-asistente">
+                <span class="pill-icon">📋</span>
+                <span class="pill-name">Asistente</span>
+              </label>
+            </div>
+          </div>
+
+          <label for="nav-dashboard" class="btn btn-primary btn-block btn-lg">
+            <span>Iniciar Sesión en el Sistema</span>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </label>
+
+          <div class="login-footer">
+            <span class="badge-pill info">Tolerancia máxima: 15 minutos</span>
+            <p class="help-text">Versión PWA / Móvil APK Compatible</p>
+          </div>
+        </form>
+
+      </div>
+    </section>
+
+    <header class="main-header glass-panel">
+      <div class="header-left">
+        <label for="nav-dashboard" class="header-brand">
+          <span class="logo-mini">AP</span>
+          <span class="brand-text">Asistencias<strong>PRO</strong></span>
+        </label>
+
+        <div class="role-badge-active">
+          <span class="role-tag-show tag-gerente">👑 Rol: Gerencia General</span>
+          <span class="role-tag-show tag-cajero">💳 Rol: Sector Cajas</span>
+          <span class="role-tag-show tag-asistente">📋 Rol: Asistente Operativo</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs">
+        <label for="nav-dashboard" class="tab-btn tab-btn-dashboard">
+          <span class="tab-icon">🏠</span>
+          <span class="tab-text">Tablero</span>
+        </label>
+        <label for="nav-reports" class="tab-btn tab-btn-reports">
+          <span class="tab-icon">📊</span>
+          <span class="tab-text">Informes de Asistencia</span>
+        </label>
+        <label for="nav-login" class="tab-btn tab-btn-logout" title="Cerrar Sesión">
+          <span class="tab-icon">🚪</span>
+          <span class="tab-text">Salir</span>
+        </label>
+      </nav>
+    </header>
+
+    <section class="page-view" id="view-dashboard">
+      <div class="container-fluid">
+
+        <div class="profile-hero glass-panel">
+          <div class="profile-avatar-wrap">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
+              alt="Foto de perfil" class="profile-avatar img-gerente">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80"
+              alt="Foto de perfil" class="profile-avatar img-cajero">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80"
+              alt="Foto de perfil" class="profile-avatar img-asistente">
+            <span class="status-dot online" title="Conectado"></span>
+          </div>
+
+          <div class="profile-info">
+            <span class="badge-role-pill">Sesión Actual Autorizada</span>
+            <h2 class="user-name show-gerente">Lic. Mariana Silva</h2>
+            <h2 class="user-name show-cajero">Carlos Mendoza</h2>
+            <h2 class="user-name show-asistente">Sofía Villalba</h2>
+            <p class="user-dept show-gerente">Dirección de Recursos Humanos y Auditoría</p>
+            <p class="user-dept show-cajero">Caja Central - Sucursal Principal (Turno Mañana)</p>
+            <p class="user-dept show-asistente">Atención al Cliente y Mesa de Entrada</p>
+          </div>
+
+          <div class="quick-clock glass-inner">
+            <span class="clock-label">HORA OFICIAL DEL SERVIDOR</span>
+            <div class="digital-time">08:24 <span class="am-pm">AM</span></div>
+            <div class="calendar-date">📅 28 de Octubre, 2026</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+
+          <div class="stat-card glass-panel border-accent-blue">
+            <div class="stat-header">
+              <span class="stat-title">Horario Establecido</span>
+              <span class="stat-icon">⏰</span>
+            </div>
+            <div class="stat-value">08:00 AM</div>
+            <div class="stat-footer">Tolerancia hasta las 08:15 AM</div>
+          </div>
+
+          <div class="stat-card glass-panel border-accent-yellow">
+            <div class="stat-header">
+              <span class="stat-title">Hora de Ingreso Real</span>
+              <span class="stat-icon">📍</span>
+            </div>
+            <div class="stat-value text-warning">08:24 AM</div>
+            <div class="stat-footer">Registrado por Molinete 01</div>
+          </div>
+
+          <div class="stat-card glass-panel border-accent-red">
+            <div class="stat-header">
+              <span class="stat-title">Cálculo de Tardanza</span>
+              <span class="stat-icon">⚠️</span>
+            </div>
+            <div class="stat-value text-danger">+9 min</div>
+            <div class="stat-footer">
+              <span class="badge-pill danger">Llegada Tardía Leve</span>
+            </div>
+          </div>
+
+          <div class="stat-card glass-panel border-accent-green">
+            <div class="stat-header">
+              <span class="stat-title">Puntualidad del Mes</span>
+              <span class="stat-icon">📈</span>
+            </div>
+            <div class="stat-value text-success">92.4%</div>
+            <div class="stat-footer">19 Asistencias / 2 Tardías</div>
+          </div>
+
+        </div>
+
+        <div class="actions-section glass-panel">
+          <div class="section-title-wrap">
+            <h3>Centro de Control y Marcación</h3>
+            <p>Acciones disponibles según permisos de rol actual</p>
+          </div>
+
+          <div class="action-buttons-wrap">
+            <label for="modal-marcar" class="btn btn-success btn-lg">
+              <span>✔ Marcar Entrada Ahora</span>
+            </label>
+            <label for="modal-marcar" class="btn btn-outline btn-lg">
+              <span>🚪 Marcar Salida / Refrigerio</span>
+            </label>
+            <label for="nav-reports" class="btn btn-primary btn-lg">
+              <span>📑 Ver Informes Completos</span>
+            </label>
+          </div>
+
+          <div class="policy-alert glass-inner">
+            <span class="policy-icon">ℹ️</span>
+            <div class="policy-text">
+              <strong>Regla de Cálculo de Puntualidad:</strong>
+              El horario límite pactado de entrada es 08:00 AM. De 08:01 a 08:15 rige el período de gracia (A Tiempo). A
+              partir de las 08:16 se computa <strong>Llegada Tardía</strong> con descuento proporcional de turno o
+              llamado de atención automático.
+            </div>
+          </div>
+
+          <div class="role-exclusive-box show-gerente glass-inner">
+            <div class="exclusive-header">
+              <span class="badge-pill warning">Herramientas Administrativas de Gerencia</span>
+              <h4>Panel de Aprobación de Justificativos</h4>
+            </div>
+            <p>Como Gerente puedes anular tardanzas justificadas por certificado médico o inclemencias climáticas.</p>
+            <div class="toolbar-btns">
+              <button type="button" class="btn btn-sm btn-outline">Revisar 3 Justificativos Pendientes</button>
+              <button type="button" class="btn btn-sm btn-primary">Ajustar Tolerancia Global</button>
+            </div>
+          </div>
+
+          <div class="role-exclusive-box show-cajero glass-inner">
+            <div class="exclusive-header">
+              <span class="badge-pill info">Terminal de Punto de Venta</span>
+              <h4>Control de Apertura de Caja y Turno</h4>
+            </div>
+            <p>Caja asignada: <strong>Caja #04 - Planta Baja</strong>. El arqueo inicial de caja exige puntualidad
+              estricta.</p>
+          </div>
+
+          <div class="role-exclusive-box show-asistente glass-inner">
+            <div class="exclusive-header">
+              <span class="badge-pill primary">Área de Soporte</span>
+              <h4>Registro de Atención y Visitas del Día</h4>
+            </div>
+            <p>Tienes sincronizado el control de asistencia con la recepción de proveedores y clientes.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section class="page-view" id="view-reports">
+      <div class="container-fluid">
+
+        <div class="reports-header glass-panel">
+          <div>
+            <h2>Informes de Asistencia de Personal</h2>
+            <p>Auditoría de registros clasificados cronológicamente con análisis de puntualidad</p>
+          </div>
+
+          <div class="export-actions">
+            <button class="btn btn-secondary" onclick="window.print()">
+              🖨️ Imprimir / Guardar PDF
+            </button>
+            <label for="nav-dashboard" class="btn btn-outline">
+              ⬅ Volver al Tablero
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-bar glass-panel">
+          <span class="filter-title">Clasificar por Fecha:</span>
+          <div class="filter-chips">
+            <label for="filter-all" class="chip chip-all">
+              📅 Todos los Registros
+            </label>
+            <label for="filter-today" class="chip chip-today">
+              🌟 Hoy (28/10/2026)
+            </label>
+            <label for="filter-yesterday" class="chip chip-yesterday">
+              ⏮️ Ayer (27/10/2026)
+            </label>
+            <label for="filter-prev" class="chip chip-prev">
+              🗓️ 26/10/2026 y Anteriores
+            </label>
+          </div>
+        </div>
+
+        <div class="table-responsive glass-panel">
+          <table class="attendance-table">
+            <thead>
+              <tr>
+                <th>Colaborador</th>
+                <th>Rol / Puesto</th>
+                <th>Fecha</th>
+                <th>Horario Entrada</th>
+                <th>Hora Marcada</th>
+                <th>Cálculo Tardanza</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr class="row-entry row-date-today role-item-gerente">
+                <td class="col-user">
+                  <img
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
+                    alt="Avatar" class="table-avatar">
+                  <div>
+                    <strong class="col-name">Mariana Silva</strong>
+                    <span class="col-sub">Legajo: #GER-01</span>
+                  </div>
+                </td>
+                <td><span class="role-label gerente">Gerente</span></td>
+                <td><strong class="date-badge">28/10/2026</strong></td>
+                <td>08:00 AM</td>
+                <td><span class="time-mark on-time">07:55 AM</span></td>
+                <td><span class="calc-tag exact">0 min (A Tiempo)</span></td>
+                <td><span class="badge status-ok">Puntual</span></td>
+              </tr>
+
+              <tr class="row-entry row-date-today role-item-cajero">
+                <td class="col-user">
+                  <img
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
+                    alt="Avatar" class="table-avatar">
+                  <div>
+                    <strong class="col-name">Carlos Mendoza</strong>
+                    <span class="col-sub">Legajo: #CAJ-04</span>
+                  </div>
+                </td>
+                <td><span class="role-label cajero">Cajero</span></td>
+                <td><strong class="date-badge">28/10/2026</strong></td>
+                <td>08:00 AM</td>
+                <td><span class="time-mark late">08:24 AM</span></td>
+                <td><span class="calc-tag late-tag">+9 min de demora</span></td>
+                <td><span class="badge status-late">Llegada Tardía</span></td>
+              </tr>
+
+              <tr class="row-entry row-date-today role-item-asistente">
+                <td class="col-user">
+                  <img
+                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80"
+                    alt="Avatar" class="table-avatar">
+                  <div>
+                    <strong class="col-name">Sofía Villalba</strong>
+                    <span class="col-sub">Legajo: #ASI-12</span>
+                  </div>
+                </td>
+                <td><span class="role-label asistente">Asistente</span></td>
+                <td><strong class="date-badge">28/10/2026</strong></td>
+                <td>08:00 AM</td>
+                <td><span class="time-mark on-time">08:09 AM</span></td>
+                <td><span class="calc-tag exact">Dentro de tolerancia</span></td>
+                <td><span class="badge status-ok">Puntual</span></td>
+              </tr>
+
+              <tr class="row-entry row-date-yesterday role-item-cajero">
+                <td class="col-user">
+                  <img
+                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
+                    alt="Avatar" class="table-avatar">
+                  <div>
+                    <strong class="col-name">Rodrigo Galeano</strong>
+                    <span class="col-sub">Legajo: #CAJ-08</span>
+                  </div>
+                </td>
+                <td><span class="role-label cajero">Cajero</span></td>
+                <td><strong class="date-badge">27/10/2026</strong></td>
+                <td>08:00 AM</td>
+                <td><span class="time-mark late-severe">08:42 AM</span></td>
+                <td><span class="calc-tag severe-tag">+27 min de demora</span></td>
+                <td><span class="badge status-severe">Tardanza Severa</span></td>
+              </tr>
+
+              <tr class="row-entry row-date-yesterday role-item-gerente">
+                <td class="col-user">
+                  <img
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
+                    alt="Avatar" class="table-avatar">
+                  <div>
+                    <strong class="col-name">Mariana Silva</strong>
+                    <span class="col-sub">Legajo: #GER-01</span>
+                  </div>
+                </td>
+                <td><span class="role-label gerente">Gerente</span></td>
+                <td><strong class="date-badge">27/10/2026</strong></td>
+                <td>08:00 AM</td>
+                <td><span class="time-mark on-time">07:50 AM</span></td>
+                <td><span class="calc-tag exact">0 min (A Tiempo)</span></td>
+                <td><span class="badge status-ok">Puntual</span></td>
+              </tr>
+
+              <tr class="row-entry row-date-prev role-item-asistente">
+                <td class="col-user">
+                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80"
+                    alt="Avatar" class="table-avatar">
+                  <div>
+                    <strong class="col-name">Laura Benítez</strong>
+                    <span class="col-sub">Legajo: #ASI-03</span>
+                  </div>
+                </td>
+                <td><span class="role-label asistente">Asistente</span></td>
+                <td><strong class="date-badge">26/10/2026</strong></td>
+                <td>08:00 AM</td>
+                <td><span class="time-mark on-time">08:05 AM</span></td>
+                <td><span class="calc-tag exact">Dentro de tolerancia</span></td>
+                <td><span class="badge status-ok">Puntual</span></td>
+              </tr>
+
+              <tr class="row-entry row-date-prev role-item-cajero">
+                <td class="col-user">
+                  <img
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
+                    alt="Avatar" class="table-avatar">
+                  <div>
+                    <strong class="col-name">Carlos Mendoza</strong>
+                    <span class="col-sub">Legajo: #CAJ-04</span>
+                  </div>
+                </td>
+                <td><span class="role-label cajero">Cajero</span></td>
+                <td><strong class="date-badge">26/10/2026</strong></td>
+                <td>08:00 AM</td>
+                <td><span class="time-mark on-time">07:58 AM</span></td>
+                <td><span class="calc-tag exact">0 min (A Tiempo)</span></td>
+                <td><span class="badge status-ok">Puntual</span></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <div class="summary-cards-row">
+          <div class="sum-box glass-panel">
+            <span class="sum-num text-success">5</span>
+            <span class="sum-desc">Llegadas a Tiempo</span>
+          </div>
+          <div class="sum-box glass-panel">
+            <span class="sum-num text-warning">1</span>
+            <span class="sum-desc">Tardanza Leve (+9m)</span>
+          </div>
+          <div class="sum-box glass-panel">
+            <span class="sum-num text-danger">1</span>
+            <span class="sum-desc">Tardanza Crítica (+27m)</span>
+          </div>
+          <div class="sum-box glass-panel">
+            <span class="sum-num text-primary">100%</span>
+            <span class="sum-desc">Auditoría Clasificada</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="modal-backdrop">
+      <div class="modal-box glass-panel">
+        <div class="modal-icon-badge">✅</div>
+        <h3>¡Asistencia Registrada con Éxito!</h3>
+        <p>Tu marcación biométrica y de geolocalización ha sido grabada en el servidor de la empresa.</p>
+
+        <div class="modal-data glass-inner">
+          <div class="modal-row"><span>Fecha:</span> <strong>28/10/2026</strong></div>
+          <div class="modal-row"><span>Hora Marcada:</span> <strong>08:24:15 AM</strong></div>
+          <div class="modal-row"><span>Estado de Puntualidad:</span> <span class="badge status-late">Llegada Tardía (+9
+              min)</span></div>
+        </div>
+
+        <label for="modal-marcar" class="btn btn-primary btn-block">Aceptar y Continuar</label>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

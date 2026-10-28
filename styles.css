@@ -1,0 +1,1270 @@
+/* ==========================================================================
+   ASISTENCIAS PRO - SISTEMA DE CONTROL DE ASISTENCIA Y PERSONAL
+   Desarrollado con HTML5 y CSS3 Moderno (Glassmorphism, Responsive & PWA Ready)
+   ========================================================================== */
+
+/* --- 1. Variables Globales y Paleta Corporativa --- */
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: rgba(37, 99, 235, 0.15);
+
+  --secondary: #0ea5e9;
+  --accent: #6366f1;
+
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.15);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.15);
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.15);
+
+  --dark-bg: #0b1120;
+  --card-bg: rgba(30, 41, 59, 0.72);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --inner-bg: rgba(15, 23, 42, 0.65);
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --shadow-glow: 0 10px 30px -10px rgba(37, 99, 235, 0.35);
+  --shadow-card: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+  --transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- 2. Reseteo y Estilos Base --- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--dark-bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ocultar inputs radio/checkbox que manejan el estado */
+.hidden-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+/* --- 3. Fondo Corporativo con Formas Animadas (Glassmorphism) --- */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 15% 20%, #1e1b4b 0%, #0b1120 70%);
+  overflow: hidden;
+}
+
+.bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.45;
+  animation: float 22s ease-in-out infinite alternate;
+}
+
+.shape-1 {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  top: -100px;
+  right: -50px;
+}
+
+.shape-2 {
+  width: 450px;
+  height: 450px;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  bottom: -80px;
+  left: -80px;
+  animation-duration: 26s;
+  animation-delay: -5s;
+}
+
+.shape-3 {
+  width: 320px;
+  height: 320px;
+  background: linear-gradient(135deg, #06b6d4, #0284c7);
+  top: 40%;
+  left: 45%;
+  opacity: 0.25;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  50% {
+    transform: translate(40px, 35px) rotate(180deg);
+  }
+
+  100% {
+    transform: translate(-30px, 60px) rotate(360deg);
+  }
+}
+
+/* --- 4. Componentes de Vidrio Esmerilado (Glass Panel) --- */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.glass-inner {
+  background: var(--inner-bg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+/* --- 5. Botones y Controles de Interfaz --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 12px 22px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  user-select: none;
+  text-align: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), #3b82f6);
+  color: #fff;
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-hover), var(--primary));
+  transform: translateY(-2px);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--success), #059669);
+  color: #fff;
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -6px rgba(16, 185, 129, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--text-main);
+}
+
+.btn-outline:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  color: #60a5fa;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-lg {
+  padding: 15px 24px;
+  font-size: 1.05rem;
+}
+
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 0.82rem;
+}
+
+/* --- 6. Insignias / Badges y Etiquetas --- */
+.badge,
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.status-ok {
+  background: var(--success-bg);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-late {
+  background: var(--warning-bg);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-severe {
+  background: var(--danger-bg);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-pill.info {
+  background: rgba(14, 165, 233, 0.15);
+  color: #38bdf8;
+}
+
+.badge-pill.warning {
+  background: var(--warning-bg);
+  color: #fbbf24;
+}
+
+.badge-pill.danger {
+  background: var(--danger-bg);
+  color: #f87171;
+}
+
+.badge-pill.primary {
+  background: var(--primary-light);
+  color: #60a5fa;
+}
+
+/* ==========================================================================
+   SISTEMA DE NAVEGACIÓN Y VISTAS (PURO CSS)
+   ========================================================================== */
+.page-view {
+  display: none;
+  width: 100%;
+  animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Lógica de control con :checked */
+#nav-login:checked~.app-layout #view-login {
+  display: flex;
+}
+
+#nav-dashboard:checked~.app-layout #view-dashboard {
+  display: block;
+}
+
+#nav-reports:checked~.app-layout #view-reports {
+  display: block;
+}
+
+/* Ocultar barra superior cuando estamos en el login */
+#nav-login:checked~.app-layout .main-header {
+  display: none;
+}
+
+/* Indicador de pestaña activa en Header */
+#nav-dashboard:checked~.app-layout .tab-btn-dashboard,
+#nav-reports:checked~.app-layout .tab-btn-reports {
+  background: var(--primary);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================================================
+   VISTA 1: LOGIN Y FORMULARIO CON SELECCIÓN DE ROLES
+   ========================================================================== */
+#view-login {
+  min-height: 100vh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 40px 32px;
+  position: relative;
+}
+
+.brand-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.logo-box {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, var(--primary), #4f46e5);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5);
+}
+
+.brand-header h1 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.brand-header .subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 1.1rem;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.form-control {
+  width: 100%;
+  padding: 13px 14px 13px 44px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  background: rgba(15, 23, 42, 0.9);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+/* Selector de Rol mediante Etiquetas */
+.role-selector-pills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.role-pill {
+  padding: 12px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.role-pill .pill-icon {
+  font-size: 1.3rem;
+}
+
+.role-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Estados de selección de Rol en el Login */
+#role-gerente:checked~.app-layout .pill-gerente {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.35), rgba(79, 70, 229, 0.45));
+  border-color: #60a5fa;
+  color: #fff;
+}
+
+#role-cajero:checked~.app-layout .pill-cajero {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.35), rgba(6, 182, 212, 0.45));
+  border-color: #38bdf8;
+  color: #fff;
+}
+
+#role-asistente:checked~.app-layout .pill-asistente {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.35), rgba(5, 150, 105, 0.45));
+  border-color: #34d399;
+  color: #fff;
+}
+
+.login-footer {
+  margin-top: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.help-text {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   HEADER PRINCIPAL Y NAVEGACIÓN
+   ========================================================================== */
+.main-header {
+  margin: 16px 24px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 16px;
+  z-index: 50;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-mini {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.brand-text {
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.role-tag-show {
+  display: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+}
+
+.tag-gerente {
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.4);
+}
+
+.tag-cajero {
+  background: rgba(14, 165, 233, 0.2);
+  color: #7dd3fc;
+  border: 1px solid rgba(14, 165, 233, 0.4);
+}
+
+.tag-asistente {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: var(--transition);
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.tab-btn-logout:hover {
+  background: var(--danger-bg);
+  color: #f87171;
+}
+
+/* ==========================================================================
+   CONTROL DE VISIBILIDAD POR ROLES (Gerente, Cajero, Asistente)
+   ========================================================================== */
+.show-gerente,
+.show-cajero,
+.show-asistente,
+.img-gerente,
+.img-cajero,
+.img-asistente {
+  display: none !important;
+}
+
+#role-gerente:checked~.app-layout .show-gerente,
+#role-gerente:checked~.app-layout .img-gerente,
+#role-gerente:checked~.app-layout .tag-gerente {
+  display: flex !important;
+}
+
+#role-cajero:checked~.app-layout .show-cajero,
+#role-cajero:checked~.app-layout .img-cajero,
+#role-cajero:checked~.app-layout .tag-cajero {
+  display: flex !important;
+}
+
+#role-asistente:checked~.app-layout .show-asistente,
+#role-asistente:checked~.app-layout .img-asistente,
+#role-asistente:checked~.app-layout .tag-asistente {
+  display: flex !important;
+}
+
+/* Para textos dentro de h2 y párrafos */
+#role-gerente:checked~.app-layout h2.show-gerente,
+#role-gerente:checked~.app-layout p.show-gerente {
+  display: block !important;
+}
+
+#role-cajero:checked~.app-layout h2.show-cajero,
+#role-cajero:checked~.app-layout p.show-cajero {
+  display: block !important;
+}
+
+#role-asistente:checked~.app-layout h2.show-asistente,
+#role-asistente:checked~.app-layout p.show-asistente {
+  display: block !important;
+}
+
+/* ==========================================================================
+   VISTA 2: DASHBOARD Y CÁLCULO DE LLEGADAS TARDÍAS
+   ========================================================================== */
+.container-fluid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 24px 60px;
+}
+
+.profile-hero {
+  padding: 24px 30px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.profile-avatar-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #3b82f6;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+.status-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--success);
+  border: 2px solid var(--dark-bg);
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 250px;
+}
+
+.badge-role-pill {
+  font-size: 0.72rem;
+  color: #38bdf8;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.user-name {
+  font-size: 1.55rem;
+  font-weight: 700;
+  margin: 2px 0 4px;
+}
+
+.user-dept {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.quick-clock {
+  text-align: right;
+  min-width: 190px;
+}
+
+.clock-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.digital-time {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #fff;
+  font-family: monospace;
+}
+
+.digital-time .am-pm {
+  font-size: 1.1rem;
+  color: #60a5fa;
+}
+
+.calendar-date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Tarjetas de Métricas de Llegada Tardía */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.border-accent-blue {
+  border-top: 4px solid var(--primary);
+}
+
+.border-accent-yellow {
+  border-top: 4px solid var(--warning);
+}
+
+.border-accent-red {
+  border-top: 4px solid var(--danger);
+}
+
+.border-accent-green {
+  border-top: 4px solid var(--success);
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.stat-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.stat-icon {
+  font-size: 1.25rem;
+}
+
+.stat-value {
+  font-size: 1.85rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.stat-footer {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.text-warning {
+  color: #fbbf24;
+}
+
+.text-danger {
+  color: #f87171;
+}
+
+.text-success {
+  color: #34d399;
+}
+
+.text-primary {
+  color: #60a5fa;
+}
+
+/* Panel de Acciones y Políticas */
+.actions-section {
+  padding: 28px 30px;
+  margin-bottom: 24px;
+}
+
+.section-title-wrap {
+  margin-bottom: 20px;
+}
+
+.section-title-wrap h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.section-title-wrap p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.action-buttons-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.policy-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.policy-icon {
+  font-size: 1.4rem;
+}
+
+.policy-text {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+
+/* Cajas Exclusivas por Rol */
+.role-exclusive-box {
+  border-left: 4px solid var(--primary);
+  margin-top: 16px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exclusive-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.exclusive-header h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.toolbar-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* ==========================================================================
+   VISTA 3: INFORMES DE ASISTENCIA Y FILTRADO POR FECHA
+   ========================================================================== */
+.reports-header {
+  padding: 24px 30px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.reports-header h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.reports-header p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.export-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Barra de Filtros por Fecha */
+.filter-bar {
+  padding: 14px 24px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-title {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.filter-chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Resaltado de Chips Activos mediante :checked */
+#filter-all:checked~.app-layout .chip-all {
+  background: var(--primary);
+  border-color: #60a5fa;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+#filter-today:checked~.app-layout .chip-today {
+  background: var(--primary);
+  border-color: #60a5fa;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+#filter-yesterday:checked~.app-layout .chip-yesterday {
+  background: var(--primary);
+  border-color: #60a5fa;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+#filter-prev:checked~.app-layout .chip-prev {
+  background: var(--primary);
+  border-color: #60a5fa;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+/* Lógica de Filtrado de Filas de la Tabla mediante CSS */
+#filter-today:checked~.app-layout .row-entry:not(.row-date-today) {
+  display: none;
+}
+
+#filter-yesterday:checked~.app-layout .row-entry:not(.row-date-yesterday) {
+  display: none;
+}
+
+#filter-prev:checked~.app-layout .row-entry:not(.row-date-prev) {
+  display: none;
+}
+
+/* Tabla de Asistencia */
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.attendance-table th {
+  padding: 16px 20px;
+  background: rgba(15, 23, 42, 0.85);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.attendance-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+.attendance-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.col-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.table-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.col-name {
+  display: block;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.col-sub {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.role-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.role-label.gerente {
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+}
+
+.role-label.cajero {
+  background: rgba(14, 165, 233, 0.2);
+  color: #7dd3fc;
+}
+
+.role-label.asistente {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+
+.date-badge {
+  color: #e2e8f0;
+  font-size: 0.88rem;
+}
+
+.time-mark {
+  font-weight: 700;
+  font-family: monospace;
+  font-size: 0.95rem;
+}
+
+.time-mark.on-time {
+  color: #34d399;
+}
+
+.time-mark.late {
+  color: #fbbf24;
+}
+
+.time-mark.late-severe {
+  color: #f87171;
+}
+
+.calc-tag {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.calc-tag.exact {
+  color: #94a3b8;
+}
+
+.calc-tag.late-tag {
+  color: #fbbf24;
+}
+
+.calc-tag.severe-tag {
+  color: #f87171;
+  font-weight: 700;
+}
+
+/* Resumen del Informe */
+.summary-cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.sum-box {
+  padding: 18px 20px;
+  text-align: center;
+}
+
+.sum-num {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.sum-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   MODAL DE CONFIRMACIÓN (PURO HTML / CSS)
+   ========================================================================== */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#modal-marcar:checked~.app-layout .modal-backdrop {
+  display: flex;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 440px;
+  padding: 32px 28px;
+  text-align: center;
+}
+
+.modal-icon-badge {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.modal-box h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.modal-box p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.modal-data {
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.modal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.88rem;
+}
+
+.modal-row:last-child {
+  border-bottom: none;
+}
+
+.modal-row span {
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   OPTIMIZACIÓN RESPONSIVA (MÓVILES / TABLETS / APK)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .main-header {
+    margin: 10px;
+    padding: 12px 16px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .header-left {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-tabs {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .tab-btn {
+    padding: 8px 10px;
+    font-size: 0.82rem;
+  }
+
+  .profile-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .status-dot {
+    right: calc(50% - 40px);
+  }
+
+  .quick-clock {
+    text-align: center;
+    width: 100%;
+  }
+
+  .action-buttons-wrap {
+    flex-direction: column;
+  }
+
+  .action-buttons-wrap .btn {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   ESTILOS PARA IMPRESIÓN (EXPORTAR A PDF / IMPRIMIR INFORME)
+   ========================================================================== */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .bg-layer,
+  .main-header,
+  .filter-bar,
+  .export-actions,
+  .nav-tabs {
+    display: none !important;
+  }
+
+  .glass-panel {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .attendance-table th,
+  .attendance-table td {
+    color: #000 !important;
+    border-color: #ccc !important;
+  }
+
+  .badge,
+  .role-label,
+  .time-mark {
+    border: 1px solid #333 !important;
+    color: #000 !important;
+  }
+}

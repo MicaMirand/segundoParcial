@@ -1,0 +1,23 @@
+{
+  "name": "Asistencias Pro - Control de Personal",
+  "short_name": "AsistenciasPro",
+  "description": "Sistema de Control de Asistencia, Llegadas Tardías e Informes por Rol",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+
